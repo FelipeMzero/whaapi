@@ -1,0 +1,72 @@
+services:
+  whaapi:
+    build: .
+    container_name: whaapi
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    env_file:
+      - .env
+    volumes:
+      - whaapi_instances:/app/instances
+      - whaapi_store:/app/store
+    networks:
+      - whaapi-net
+
+  # ── Opcional: RabbitMQ (perfil "rabbitmq") ──
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: whaapi-rabbitmq
+    restart: unless-stopped
+    profiles: ["rabbitmq"]
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - whaapi-net
+
+  # ── Opcional: MinIO (perfil "minio") ──
+  minio:
+    image: minio/minio:latest
+    container_name: whaapi-minio
+    restart: unless-stopped
+    profiles: ["minio"]
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - whaapi_minio:/data
+    networks:
+      - whaapi-net
+
+  # ── Opcional: Kafka KRaft (perfil "kafka") ──
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: whaapi-kafka
+    restart: unless-stopped
+    profiles: ["kafka"]
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+    networks:
+      - whaapi-net
+
+volumes:
+  whaapi_instances:
+  whaapi_store:
+  whaapi_minio:
+
+networks:
+  whaapi-net:
+    driver: bridge

@@ -1,0 +1,48 @@
+{
+  "name": "whaapi",
+  "version": "1.0.0",
+  "description": "WhaAPI — API REST para WhatsApp e WhatsApp Business (HTTP/HTTPS) com integrações Typebot, Chatwoot, RabbitMQ, Kafka, SQS, Socket.io, Dify, OpenAI e S3/MinIO",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "build": "node --check src/server.js",
+    "test": "node --test tests/"
+  },
+  "keywords": [
+    "whatsapp",
+    "whatsapp-business",
+    "api",
+    "baileys",
+    "typebot",
+    "chatwoot",
+    "rabbitmq",
+    "kafka",
+    "sqs",
+    "socket.io",
+    "dify",
+    "openai",
+    "s3",
+    "minio"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.620.0",
+    "@aws-sdk/client-sqs": "^3.620.0",
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "amqplib": "^0.10.4",
+    "axios": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "kafkajs": "^2.2.4",
+    "mime-types": "^2.1.35",
+    "pino": "^9.3.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.7.5"
+  }
+}

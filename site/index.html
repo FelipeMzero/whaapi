@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WhaAPI — API REST open-source para WhatsApp e WhatsApp Business com integrações Typebot, Chatwoot, RabbitMQ, Kafka, SQS, Socket.io, Dify, OpenAI e S3/MinIO." />
+  <title>WhaAPI — API REST para WhatsApp</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">📱 Wha<span>API</span></a>
+      <nav>
+        <a href="#recursos">Recursos</a>
+        <a href="#instalacao">Instalação</a>
+        <a href="#endpoints">Endpoints</a>
+        <a href="#eventos">Eventos</a>
+        <a href="https://github.com/FelipeMzero/whaapi" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>API REST para <span class="grad">WhatsApp</span><br />e WhatsApp Business</h1>
+      <p class="sub">
+        Open-source, HTTP &amp; HTTPS, multi-instância. Conecte via QR Code (Baileys) ou pela
+        Cloud API oficial da Meta — e integre com suas ferramentas favoritas.
+      </p>
+      <div class="hero-actions">
+        <a href="#instalacao" class="btn btn-primary">Começar agora</a>
+        <a href="#endpoints" class="btn btn-outline">Ver documentação</a>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <pre><code>$ docker compose up -d --build
+<span class="ok">✔</span> WhaAPI HTTP ouvindo na porta 8080
+<span class="ok">✔</span> WhaAPI HTTPS ouvindo na porta 8443
+<span class="ok">✔</span> Instância "minha" conectada ao WhatsApp</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="recursos" class="section">
+    <div class="container">
+      <h2>Integrações nativas</h2>
+      <p class="section-sub">Eventos do WhatsApp distribuídos em tempo real para toda a sua stack.</p>
+      <div class="grid" id="features-grid"></div>
+    </div>
+  </section>
+
+  <section id="instalacao" class="section alt">
+    <div class="container">
+      <h2>Instalação</h2>
+      <p class="section-sub">Suba em minutos com Docker ou Node.js (NVM).</p>
+      <div class="tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="docker">🐳 Docker</button>
+          <button class="tab-btn" data-tab="nvm">⬢ Node.js / NVM</button>
+        </div>
+        <div class="tab-content active" id="tab-docker">
+<pre><code>git clone https://github.com/FelipeMzero/whaapi.git
+cd whaapi
+cp .env.example .env   # configure sua API_KEY
+docker compose up -d --build
+
+# Com RabbitMQ + MinIO opcionais:
+docker compose --profile rabbitmq --profile minio up -d</code></pre>
+        </div>
+        <div class="tab-content" id="tab-nvm">
+<pre><code>nvm install 20 &amp;&amp; nvm use 20
+git clone https://github.com/FelipeMzero/whaapi.git
+cd whaapi
+cp .env.example .env
+npm install
+npm start</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="endpoints" class="section">
+    <div class="container">
+      <h2>Endpoints</h2>
+      <p class="section-sub">Autentique com o header <code class="inline">apikey</code>. Exemplos:</p>
+      <div class="endpoints" id="endpoints-list"></div>
+    </div>
+  </section>
+
+  <section id="eventos" class="section alt">
+    <div class="container">
+      <h2>Eventos em tempo real</h2>
+      <p class="section-sub">
+        Cada evento é entregue simultaneamente via <strong>Webhook</strong>, <strong>Socket.io</strong>,
+        <strong>RabbitMQ</strong>, <strong>Kafka</strong> e <strong>SQS</strong>.
+      </p>
+<pre><code>import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8080", { query: { instance: "minha" } });
+
+socket.on("messages.upsert", (payload) =&gt; {
+  console.log(payload.data.number, payload.data.text);
+});</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p><strong>WhaAPI</strong> — open-source sob licença MIT.</p>
+      <p class="disclaimer">
+        Projeto não afiliado nem endossado pela Meta. O modo Baileys pode violar os Termos de
+        Serviço do WhatsApp — para produção, prefira a Cloud API oficial.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
